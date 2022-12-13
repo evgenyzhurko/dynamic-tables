@@ -36,6 +36,10 @@
       </tr>
     </tbody>
   </v-table>
+    <v-pagination
+      v-model="page"
+      :length="pageCount"
+    ></v-pagination>
 </template>
 
 <script>
@@ -52,7 +56,15 @@ export default {
     return {
       data: [],
       actions: [],
+      page: 0,
+      limit: 10,
+      count: 0
     };
+  },
+  computed: {
+    pageCount() {
+      return this.count / this.limit;
+    },
   },
   watch: {
     pageInfo() {
@@ -67,12 +79,18 @@ export default {
     collectionName() {
       this.update();
     },
+    page() {
+        this.update()
+    }
   },
   methods: {
     update() {
       axios
-        .get("http://127.0.0.1:8000/v1/data/" + this.collectionName)
+        .get(`http://127.0.0.1:8000/v1/data/${this.collectionName}?skip=${this.page * this.limit}&limit=${this.limit}`)
         .then((response) => (this.data = response["data"]["result"]));
+      axios
+        .get(`http://127.0.0.1:8000/v1/data/${this.collectionName}/count`)
+        .then((response) => (this.count = response["data"]["result"]));
     },
     executeActionForObject(objectId, actionId) {
       console.log(objectId, actionId);
