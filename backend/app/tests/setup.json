@@ -1,0 +1,46 @@
+{
+  "config": [
+    {
+      "name": "Products",
+      "params": [
+        { "name": "name", "type": "String" },
+        { "name": "description", "type": "String" }
+      ],
+      "base_param": "name"
+    },
+    {
+      "name": "Stock",
+      "params": [
+        { "name": "product_id", "type": "Ref<Products>" },
+        { "name": "count", "type": "Integer" }
+      ]
+    },
+    {
+      "name": "Order",
+      "params": [
+        { "name": "product_id", "type": "Ref<Products>" },
+        { "name": "company_id", "type": "Ref<Companies>" },
+        { "name": "count", "type": "Integer" }
+      ]
+    },
+    {
+      "name": "Companies",
+      "params": [{ "name": "name", "type": "String" }],
+      "base_param": "name"
+    }
+  ],
+  "data": {
+    "Products": [
+        { "name": "A", "description": "aaaaa" },
+        { "name": "B", "description": "bbbbb" },
+        { "name": "C", "description": "ccccc" },
+        { "name": "D", "description": "ddddd" },
+        { "name": "E", "description": "eeeee" }
+    ],
+    "Companies": [
+        { "name": "X" },
+        { "name": "Y" },
+        { "name": "Z" }
+    ]
+  }
+}

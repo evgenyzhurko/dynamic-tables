@@ -1,0 +1,7 @@
+requests
+fastapi
+pydantic
+uvicorn
+fastapi_keycloak
+git+https://github.com/evgenyzhurko/flowlang.git@main
+pymongo
