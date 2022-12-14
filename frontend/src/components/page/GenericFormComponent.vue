@@ -35,6 +35,20 @@
         :collectionName="item['type'].substr(4, item['type'].length - 5)"
         @item-selected="(v) => (item['inputValue'] = v['_id'])"
       />
+      <DatepickerComponent
+        v-else-if="item['type'] == 'Date'"
+        v-model="item['inputValue']"
+        :enable-time-picker="false"
+      />
+      <DatepickerComponent
+        v-else-if="item['type'] == 'Time'"
+        v-model="item['inputValue']"
+        time-picker
+      />
+      <DatepickerComponent
+        v-else-if="item['type'] == 'Datetime'"
+        v-model="item['inputValue']"
+      />
     </div>
   </v-container>
   <v-simple-checkbox label="Checkbox"></v-simple-checkbox>
@@ -106,6 +120,9 @@ export default {
           this.outputParams[index]["inputValue"] = 0.0;
           break;
         case "Bool":
+          this.outputParams[index]["inputValue"] = "false";
+          break;
+        case "Datetime":
           this.outputParams[index]["inputValue"] = "false";
           break;
         default:

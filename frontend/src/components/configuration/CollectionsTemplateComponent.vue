@@ -40,7 +40,7 @@ export default {
     return {
       name: "",
       params: [],
-      dtypes: ['String', 'Integer', 'Float', 'Bool'],
+      dtypes: ['String', 'Integer', 'Float', 'Bool', 'Datetime', 'Date', 'Time'],
       rules: {
         required: (value) => !!value || "Required",
         text: (value) => {

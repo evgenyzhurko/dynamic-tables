@@ -18,6 +18,10 @@ import CollectionsTemplateComponent from "@/components/configuration/Collections
 import ActionsComponent from "@/components/configuration/ActionsComponent.vue";
 import DashboardsComponent from "@/components/configuration/DashboardsComponent.vue";
 
+
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 const routes = [
   { path: "/", component: HomeComponent },
   { path: "/configuration", component: MainConfigurationComponent },
@@ -51,6 +55,7 @@ const vuetify = createVuetify({
 });
 
 const app = createApp(App);
+app.component('DatepickerComponent', Datepicker);
 app.use(router);
 app.use(vuetify);
 app.mount("#app");
