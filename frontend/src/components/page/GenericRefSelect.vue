@@ -14,7 +14,7 @@
 const axios = require("axios").default;
 
 export default {
-  name: "GenericSelect",
+  name: "GenericRefSelect",
   props: {
     collectionName: String,
   },

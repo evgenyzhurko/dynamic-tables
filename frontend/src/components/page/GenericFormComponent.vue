@@ -30,7 +30,7 @@
         input-value="true"
         v-model="item['inputValue']"
       ></v-checkbox>
-      <GenericSelect
+      <GenericRefSelect
         v-else-if="item['type'].match('^Ref<[a-zA-Z0-9]*>')"
         :collectionName="item['type'].substr(4, item['type'].length - 5)"
         @item-selected="(v) => (item['inputValue'] = v['_id'])"
@@ -49,6 +49,22 @@
         v-else-if="item['type'] == 'Datetime'"
         v-model="item['inputValue']"
       />
+      <v-select
+        v-else-if="item['type'] == 'Select'"
+        v-model="item['inputValue']"
+        :items="item['options']"
+        :label="item['name']"
+        return-object
+      />
+      <v-select
+        v-else-if="item['type'] == 'Multiselect'"
+        v-model="item['inputValue']"
+        :items="item['options']"
+        :label="item['name']"
+        chips
+        multiple
+        return-object
+      />
     </div>
   </v-container>
   <v-simple-checkbox label="Checkbox"></v-simple-checkbox>
@@ -58,12 +74,12 @@
 <script>
 const axios = require("axios").default;
 
-import GenericSelect from "@/components/page/GenericSelect.vue";
+import GenericRefSelect from "@/components/page/GenericRefSelect.vue";
 
 export default {
   name: "GenericFormComponent",
   components: {
-    GenericSelect,
+    GenericRefSelect,
   },
   props: {
     collectionName: String,
@@ -93,13 +109,9 @@ export default {
     async makeItem() {
       const data = {};
       for (const index in this.outputParams) {
-        data[this.outputParams[index]["name"]] =
-          this.outputParams[index]["inputValue"];
+        data[this.outputParams[index]["name"]] = this.outputParams[index]["inputValue"];
       }
-      await axios.post(
-        "http://127.0.0.1:8000/v1/data/" + this.collectionName,
-        data
-      );
+      await axios.post("http://127.0.0.1:8000/v1/data/" + this.collectionName, data);
       this.$emit("item-created");
     },
   },
@@ -124,6 +136,12 @@ export default {
           break;
         case "Datetime":
           this.outputParams[index]["inputValue"] = "false";
+          break;
+        case "Select":
+          this.outputParams[index]["inputValue"] = "";
+          break;
+        case "Multiselect":
+          this.outputParams[index]["inputValue"] = [];
           break;
         default:
           this.outputParams[index]["inputValue"] = "";

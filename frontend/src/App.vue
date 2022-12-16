@@ -8,12 +8,10 @@
           </template>
           <v-list>
             <v-list-item>
-                <router-link to="/">Home</router-link>
+              <router-link to="/">Home</router-link>
             </v-list-item>
             <v-list-item v-for="(item, index) in availablePages" :key="index">
-              <router-link v-bind:to="'/pages/' + item">{{
-                item
-              }}</router-link>
+              <router-link v-bind:to="'/pages/' + item">{{ item }}</router-link>
               <!-- <v-list-item-title>{{ item.title }}</v-list-item-title> -->
             </v-list-item>
           </v-list>
@@ -25,21 +23,21 @@
           </template>
           <v-list>
             <v-list-item>
-                <router-link to="/configuration">Setup</router-link>
+              <router-link to="/configuration">Setup</router-link>
             </v-list-item>
             <v-list-item>
-                <router-link to="/configuration/collections">Collections</router-link>
+              <router-link to="/configuration/collections">Collections</router-link>
             </v-list-item>
-            <v-list-item>
+            <!-- <v-list-item>
                 <router-link to="/configuration/actions">Actions</router-link>
             </v-list-item>
             <v-list-item>
                 <router-link to="/configuration/dashboards">Dashboards</router-link>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </v-menu>
 
-        <v-menu>
+        <!-- <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn color="primary" v-bind="props"> Dashboards </v-btn>
           </template>
@@ -50,7 +48,7 @@
               }}</router-link>
             </v-list-item>
           </v-list>
-        </v-menu>
+        </v-menu> -->
       </p>
     </v-app-bar>
     <v-main>
@@ -115,5 +113,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
 </style>
