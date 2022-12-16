@@ -9,22 +9,26 @@
     />
   </div>
   <div v-for="(item, index) in params" :key="index">
-    <div>
+    <v-row>
       <v-text-field
+        class="pa-2 ma-2"
         label="Param Name"
         :rules="[rules.required, rules.text]"
         v-model="item.name"
         required
       />
-    </div>
-    <div>
-      <v-select label="Data type" :items="dtypes" v-model="item.type" required>
-      </v-select>
-    </div>
-    <div v-if="item.type == 'Select' || item.type == 'Multiselect'">
-      <SelectCreatorComponent :paramName="Option" 
-        @optionsChanged="(opt) => (item.options = opt)" />
-    </div>
+
+      <v-col class="pa-2 ma-2">
+        <v-select label="Data type" :items="dtypes" v-model="item.type" required>
+        </v-select>
+        <div v-if="item.type == 'Select' || item.type == 'Multiselect'">
+          <SelectCreatorComponent
+            :paramName="Option"
+            @optionsChanged="(opt) => (item.options = opt)"
+          />
+        </div>
+      </v-col>
+    </v-row>
     <v-btn @click="removeCollectionParam(index)">Delete Param</v-btn><br />
   </div>
   <v-btn @click="addCollectionParam">+ param</v-btn><br />
@@ -32,7 +36,7 @@
 </template>
 
 <script>
-import SelectCreatorComponent from '@/components/configuration/SelectCreatorComponent.vue';
+import SelectCreatorComponent from "@/components/configuration/SelectCreatorComponent.vue";
 
 const axios = require("axios").default;
 
@@ -67,9 +71,7 @@ export default {
   mounted() {
     axios
       .get("http://127.0.0.1:8000/v1/configuration/collections")
-      .then((response) =>
-        this.updateReferenceDtypes(response["data"]["result"])
-      );
+      .then((response) => this.updateReferenceDtypes(response["data"]["result"]));
   },
   methods: {
     createDataCollectionTemplate() {

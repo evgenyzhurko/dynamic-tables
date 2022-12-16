@@ -1,11 +1,16 @@
 <template>
   <div>
-    <v-select 
-        v-model="selected" 
-        :items="data" 
-        :label="collectionName"
-        :item-title="(item) => { return item[param_name] }"
-        return-object>
+    <v-select
+      v-model="selected"
+      :items="data"
+      :label="collectionName"
+      :item-title="
+        (item) => {
+          return item['_id'];
+        }
+      "
+      return-object
+    >
     </v-select>
   </div>
 </template>
@@ -36,8 +41,7 @@ export default {
       .then((response) => (this.data = response["data"]["result"]));
     axios
       .get(
-        "http://127.0.0.1:8000/v1/configuration/collections?name=" +
-          this.collectionName
+        "http://127.0.0.1:8000/v1/configuration/collections?name=" + this.collectionName
       )
       .then(
         (response) => (
