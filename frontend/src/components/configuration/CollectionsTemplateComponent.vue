@@ -1,38 +1,45 @@
 <template>
   <h1>Create new data collection template</h1>
-  <div>
-    <v-text-field
-      label="Collection Name"
-      :rules="[rules.required, rules.text]"
-      v-model="name"
-      required
-    />
-  </div>
-  <div v-for="(item, index) in params" :key="index">
-    <v-row>
+  <v-form ref="form">
+    <div>
       <v-text-field
-        class="pa-2 ma-2"
-        label="Param Name"
+        label="Collection Name"
         :rules="[rules.required, rules.text]"
-        v-model="item.name"
+        v-model="name"
         required
       />
+    </div>
+    <div v-for="(item, index) in params" :key="index">
+      <v-row>
+        <v-text-field
+          class="pa-2 ma-2"
+          label="Param Name"
+          :rules="[rules.required, rules.text]"
+          v-model="item.name"
+          required
+        />
 
-      <v-col class="pa-2 ma-2">
-        <v-select label="Data type" :items="dtypes" v-model="item.type" required>
-        </v-select>
-        <div v-if="item.type == 'Select' || item.type == 'Multiselect'">
-          <SelectCreatorComponent
-            :paramName="Option"
-            @optionsChanged="(opt) => (item.options = opt)"
-          />
-        </div>
-      </v-col>
-    </v-row>
-    <v-btn @click="removeCollectionParam(index)">Delete Param</v-btn><br />
-  </div>
-  <v-btn @click="addCollectionParam">+ param</v-btn><br />
-  <v-btn @click="createDataCollectionTemplate">Create template</v-btn>
+        <v-col class="pa-2 ma-2">
+          <v-select
+            label="Data type"
+            :items="dtypes"
+            v-model="item.type"
+            required
+          >
+          </v-select>
+          <div v-if="item.type == 'Select' || item.type == 'Multiselect'">
+            <SelectCreatorComponent
+              :paramName="Option"
+              @optionsChanged="(opt) => (item.options = opt)"
+            />
+          </div>
+        </v-col>
+      </v-row>
+      <v-btn @click="removeCollectionParam(index)">Delete Param</v-btn><br />
+    </div>
+    <v-btn @click="addCollectionParam">+ param</v-btn><br />
+    <v-btn @click="createDataCollectionTemplate">Create template</v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -71,16 +78,22 @@ export default {
   mounted() {
     axios
       .get("http://127.0.0.1:8000/v1/configuration/collections")
-      .then((response) => this.updateReferenceDtypes(response["data"]["result"]));
+      .then((response) =>
+        this.updateReferenceDtypes(response["data"]["result"])
+      );
   },
   methods: {
-    createDataCollectionTemplate() {
-      axios
-        .post("http://127.0.0.1:8000/v1/configuration/collections", {
-          name: this.name,
-          params: this.params,
-        })
-        .then((response) => console.log(response));
+    async createDataCollectionTemplate() {
+      const { valid } = await this.$refs.form.validate();
+      if (!valid) return;
+
+      await axios.post("http://127.0.0.1:8000/v1/configuration/collections", {
+        name: this.name,
+        params: this.params,
+      });
+
+      this.$refs.form.reset();
+      this.$refs.form.resetValidation();
     },
     addCollectionParam() {
       this.params.push({

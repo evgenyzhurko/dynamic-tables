@@ -54,7 +54,6 @@
         v-model="item['inputValue']"
         :items="item['options']"
         :label="item['name']"
-        return-object
       />
       <v-select
         v-else-if="item['type'] == 'Multiselect'"
@@ -63,7 +62,6 @@
         :label="item['name']"
         chips
         multiple
-        return-object
       />
     </div>
   </v-container>

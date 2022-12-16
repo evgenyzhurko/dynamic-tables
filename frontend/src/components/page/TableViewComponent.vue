@@ -22,7 +22,7 @@
             {{ Date(rowItem[headerItem["name"]]).toLocaleString() }}
           </v-container>
           <v-container v-else-if="headerItem['type'] == 'Multiselect'">
-            <v-chip v-for="(index, option) in rowItem[headerItem['name']]" :key="index">
+            <v-chip v-for="(option, index) in rowItem[headerItem['name']]" :key="index">
               {{ option }}
             </v-chip>
           </v-container>
@@ -129,10 +129,10 @@ export default {
         )
         .then((response) => console.log(response), this.update());
     },
-    deleteObject(id) {
-      axios
-        .delete("http://127.0.0.1:8000/v1/data/" + this.collectionName + "?_id=" + id)
-        .then((response) => console.log("success delete:" + response));
+    async deleteObject(id) {
+      await axios
+        .delete("http://127.0.0.1:8000/v1/data/" + this.collectionName + "?_id=" + id);
+        this.update()
     },
   },
   mounted() {

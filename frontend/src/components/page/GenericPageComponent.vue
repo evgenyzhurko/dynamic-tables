@@ -5,9 +5,10 @@
     v-if="loaded"
     :collectionName="pageName"
     :collectionParams="pageParams"
-    :item-created="update"
+    @item-created="update"
   />
   <TableViewComponent
+    ref="tableview"
     v-if="loaded"
     :collectionName="pageName"
     :collectionParams="pageParams"
@@ -46,7 +47,10 @@ export default {
         return;
       }
       axios
-        .get("http://127.0.0.1:8000/v1/configuration/collections?name=" + this.pageName)
+        .get(
+          "http://127.0.0.1:8000/v1/configuration/collections?name=" +
+            this.pageName
+        )
         .then(
           (response) => (
             (this.pageInfo = response["data"]["result"][0]),
